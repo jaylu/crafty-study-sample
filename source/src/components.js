@@ -109,6 +109,7 @@ Crafty.c('Village', {
     // Process a visitation with this village
     visit: function() {
         this.destroy();
+        Crafty.audio.play('knock');
         Crafty.trigger('VillageVisited', this);
     }
 });
