@@ -44,5 +44,20 @@ Game = {
                 }
             }
         }
+
+        // Generate up to five villages on the map in random locations
+        var max_villages = 5;
+        for (var x = 0; x < Game.map_grid.width; x++) {
+            for (var y = 0; y < Game.map_grid.height; y++) {
+                if (Math.random() < 0.02) {
+                    Crafty.e('Village').at(x, y);
+
+                    if (Crafty('Village').length >= max_villages) {
+                        return;
+                    }
+                }
+            }
+        }
+
     }
 }

@@ -49,7 +49,9 @@ Crafty.c('PlayerCharacter', {
         this.requires('Actor, Fourway, Color, Collision')
             .fourway(4)
             .color('rgb(20, 75, 40)')
-            .stopOnSolids();
+            .stopOnSolids()
+            // Whenever the PC touches a village, respond to the event
+            .onHit('Village', this.visitVillage);
     },
 
     // Registers a stop-movement function to be called when
@@ -67,8 +69,24 @@ Crafty.c('PlayerCharacter', {
             this.x -= this._movement.x;
             this.y -= this._movement.y;
         }
+    },
+
+    // Respond to this player visiting a village
+    visitVillage: function(data) {
+        var village = data[0].obj;
+        village.collect();
     }
 });
 
+// A village is a tile on the grid that the PC must visit in order to win the game
+Crafty.c('Village', {
+    init: function() {
+        this.requires('Actor, Color')
+            .color('rgb(170, 125, 40)');
+    },
 
+    collect: function() {
+        this.destroy();
+    }
+});
 
