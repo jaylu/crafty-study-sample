@@ -69,6 +69,11 @@ gulp.task('watch', ['server'], function () {
             gulp.src(event.path, {read: false})
                 .pipe(livereload(lrServer));
         });
+        gulp.watch('./source/src/**/*.js', function (event) {
+            gulp.src(event.path, {read: false})
+                .pipe(livereload(lrServer));
+        });
+
     });
     console.log('live load server start on port:' + port);
 });
