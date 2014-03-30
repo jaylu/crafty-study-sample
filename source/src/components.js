@@ -41,11 +41,18 @@ Crafty.c('Bush', {
     }
 });
 
+// A Rock is just an Actor with a certain sprite
+Crafty.c('Rock', {
+    init: function() {
+        this.requires('Actor, Solid, spr_rock');
+    }
+});
+
 // This is the player-controlled character
 Crafty.c('PlayerCharacter', {
     init: function() {
         this.requires('Actor, Fourway, Collision, spr_player, SpriteAnimation')
-            .fourway(4)
+            .fourway(2)
             .stopOnSolids()
             .onHit('Village', this.visitVillage)
             // These next lines define our four animations
@@ -60,7 +67,7 @@ Crafty.c('PlayerCharacter', {
             .animate('PlayerMovingLeft',  0, 3, 2);
 
         // Watch for a change of direction and switch animations accordingly
-        var animation_speed = 8;
+        var animation_speed = 4;
         this.bind('NewDirection', function(data) {
             if (data.x > 0) {
                 this.animate('PlayerMovingRight', animation_speed, -1);
