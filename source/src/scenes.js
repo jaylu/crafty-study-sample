@@ -18,17 +18,16 @@ Crafty.scene('Game', function() {
     // Place a tree at every edge square on our grid of 16x16 tiles
     for (var x = 0; x < Game.map_grid.width; x++) {
         for (var y = 0; y < Game.map_grid.height; y++) {
-            var at_edge = x == 0 || x == Game.map_grid.width - 1 ||
-                y == 0 || y == Game.map_grid.height - 1;
+            var at_edge = x == 0 || x == Game.map_grid.width - 1 || y == 0 || y == Game.map_grid.height - 1;
 
             if (at_edge) {
                 // Place a tree entity at the current tile
-                Crafty.e('Tree').at(x, y);
+                Crafty.e('Tree').at(x, y)
                 this.occupied[x][y] = true;
             } else if (Math.random() < 0.06 && !this.occupied[x][y]) {
                 // Place a bush entity at the current tile
-                var bush_or_rock = (Math.random() > 0.3) ? 'Bush' : 'Rock';
-                Crafty.e(bush_or_rock).at(x, y);
+                var bush_or_rock = (Math.random() > 0.3) ? 'Bush' : 'Rock'
+                Crafty.e(bush_or_rock).at(x, y)
                 this.occupied[x][y] = true;
             }
         }
@@ -71,7 +70,7 @@ Crafty.scene('Victory', function() {
     Crafty.e('2D, DOM, Text')
         .text('All villages visited!')
         .attr({ x: 0, y: Game.height()/2 - 24, w: Game.width() })
-        .css($text_css);
+        .textFont($text_css);
 
     // Give'em a round of applause!
     Crafty.audio.play('applause');
@@ -80,11 +79,12 @@ Crafty.scene('Victory', function() {
     // the game when a key is pressed
     var delay = true;
     setTimeout(function() { delay = false; }, 5000);
-    this.restart_game = Crafty.bind('KeyDown', function() {
+    this.restart_game = function() {
         if (!delay) {
             Crafty.scene('Game');
         }
-    });
+    };
+    Crafty.bind('KeyDown', this.restart_game);
 }, function() {
     // Remove our event binding from above so that we don't
     //  end up having multiple redundant event watchers after
@@ -101,7 +101,7 @@ Crafty.scene('Loading', function(){
     Crafty.e('2D, DOM, Text')
         .text('Loading; please wait...')
         .attr({ x: 0, y: Game.height()/2 - 24, w: Game.width() })
-        .css($text_css);
+        .textFont($text_css);
 
     // Load our sprite map image
     Crafty.load([
@@ -134,23 +134,17 @@ Crafty.scene('Loading', function(){
         // Define the PC's sprite to be the first sprite in the third row of the
         //  animation sprite map
         Crafty.sprite(16, 'assets/hunter.png', {
-            spr_player:  [0, 2],
+            spr_player:  [0, 2]
         }, 0, 2);
 
         // Define our sounds for later use
         Crafty.audio.add({
-            knock:     ['assets/door_knock_3x.mp3',
-                'assets/door_knock_3x.ogg',
-                'assets/door_knock_3x.aac'],
-            applause:  ['assets/board_room_applause.mp3',
-                'assets/board_room_applause.ogg',
-                'assets/board_room_applause.aac'],
-            ring:      ['assets/candy_dish_lid.mp3',
-                'assets/candy_dish_lid.ogg',
-                'assets/candy_dish_lid.aac']
+            knock:    ['assets/door_knock_3x.mp3', 'assets/door_knock_3x.ogg', 'assets/door_knock_3x.aac'],
+            applause: ['assets/board_room_applause.mp3', 'assets/board_room_applause.ogg', 'assets/board_room_applause.aac'],
+            ring:     ['assets/candy_dish_lid.mp3', 'assets/candy_dish_lid.ogg', 'assets/candy_dish_lid.aac']
         });
 
         // Now that our sprites are ready to draw, start the game
         Crafty.scene('Game');
-    })
+    });
 });
